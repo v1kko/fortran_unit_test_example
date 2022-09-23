@@ -1,0 +1,4 @@
+program unit_tests
+use test_math_mod
+call test_euclidean_distance
+end program unit_tests

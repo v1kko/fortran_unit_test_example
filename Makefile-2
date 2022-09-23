@@ -1,0 +1,17 @@
+distance: math.f90 main.f90
+	gfortran $^ -o $@
+
+UNIT_TESTS=$(wildcard test_*.f90)
+UNIT_TESTS_OBJ=$(UNIT_TESTS:.f90=.o)
+
+%.o: %.f90
+	gfortran -c $^ -o $@
+
+distance_unit_tests: math.f90 ${UNIT_TESTS_OBJ} distance_unit_tests.o
+	gfortran -fprofile-arcs -ftest-coverage $^ -o $@ 
+
+distance_unit_tests.f90: create_test_main.sh ${UNIT_TESTS} Makefile
+	./create_test_main.sh $@
+
+clean:
+	rm *.gcda *.gcno *.mod 

@@ -1,0 +1,10 @@
+distance: math.f90 main.f90
+	gfortran $^ -o $@
+
+UNIT_TESTS=$(wildcard test_*.f90)
+
+distance_unit_tests: math.f90 ${UNIT_TESTS} distance_unit_tests.f90
+	gfortran $^ -o $@
+
+distance_unit_tests.f90: create_test_main.sh ${UNIT_TESTS} Makefile
+	./create_test_main.sh $@
